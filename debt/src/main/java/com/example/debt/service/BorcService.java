@@ -48,38 +48,93 @@ public class BorcService  {
 
         return borcDtos;
     }
-/*    public List<BorcDto> findAllVadeBorcByKullanaciId(Long kullaniciId){
-        Borc borc = new Borc();
-        List<Borc> borcList = borcEntityService.findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+    public List<BorcDto> findAllVadeBorcByKullanaciId(Long kullaniciId){
+
+        List<Borc> borcList = borcEntityService.findAllByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
         List<BorcDto> borcDtos = BorcConverter.INSTANCE.convertAllBorcListToBorcDtoList(borcList);
 
-        LocalDate now = LocalDate.now();
-        LocalDate vadeTarihi = borc.getVadeTarihi();
-        long diff = ChronoUnit.DAYS.between(now, vadeTarihi);
+        for (BorcDto borcDto : borcDtos) {
+            LocalDate now = LocalDate.now();
+            LocalDate vadeTarihi = borcDto.getVadeTarihi();
+            long diff = ChronoUnit.DAYS.between(vadeTarihi, now);
 
-        if(diff != 0){
-            double v = borc.getKalanBorcTutari() + diff * 1.5;
-            v+=v;
-            v += borc.getKalanBorcTutari(); //yaptırtmıyor
+            if(now.isAfter(vadeTarihi)){
+
+                double v = borcDto.getKalanBorcTutari() + (diff * 1.5);
+                //v+=v;
+                borcDto.setKalanBorcTutari(v);
+            }
         }
 
+
         return borcDtos;
-    }*/
-    public MappingJacksonValue findAnaBorcByKullaniciId(Long kullaniciId){
+    }
+    public List<BorcDto> findAnaBorcByKullaniciId(Long kullaniciId){
 
         List<Borc> borc = borcEntityService.findByKullaniciIdOrderByAnaBorcTutari(kullaniciId);
         List<BorcDto> borcDto = BorcConverter.INSTANCE.convertAllBorcListToBorcDtoList(borc);
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("anaBorcTutari");
+/*        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("anaBorcTutari");
 
         SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("BorcFilter", filter);
 
 
         MappingJacksonValue mapping = new MappingJacksonValue(borcDto);
 
-        mapping.setFilters(filters);
+        mapping.setFilters(filters);*/
 
-        return mapping;
+        return borcDto;
 
+    }
+
+    public List<BorcDto> findByOlusmaTarihiGreaterThanEqualAndOlusmaTarihiLessThanEqual(LocalDate startDate,LocalDate endDate){
+        List<Borc> borc = borcEntityService.findByOlusmaTarihiGreaterThanEqualAndOlusmaTarihiLessThanEqual(startDate,endDate);
+        List<BorcDto> borcDto = BorcConverter.INSTANCE.convertAllBorcListToBorcDtoList(borc);
+
+        return borcDto;
+    }
+    public BorcDto findByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId){
+        List<Borc> borcList = borcEntityService.findAllByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+        List<BorcDto> borcDtos = BorcConverter.INSTANCE.convertAllBorcListToBorcDtoList(borcList);
+        Borc borc = borcEntityService.findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+        BorcDto borcDtoo = BorcConverter.INSTANCE.converBorcToBorcDto(borc);
+        double v =0;
+        for (BorcDto borcDto : borcDtos) {
+            LocalDate now = LocalDate.now();
+            LocalDate vadeTarihi = borcDto.getVadeTarihi();
+            long diff = ChronoUnit.DAYS.between(vadeTarihi, now);
+
+            if (now.isAfter(vadeTarihi)) {
+
+                v = borcDto.getKalanBorcTutari() + (diff * 1.5);
+                //v+=v;
+                borcDto.setKalanBorcTutari(v);
+            }
+        }
+        borcDtoo.setKalanBorcTutari(v);
+
+        return borcDtoo;
+    }
+    public BorcDto findByKullaniciIdOrderByKalanBorcTutarii(Long kullaniciId){
+        List<Borc> borcList = borcEntityService.findAllByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+        List<BorcDto> borcDtos = BorcConverter.INSTANCE.convertAllBorcListToBorcDtoList(borcList);
+        Borc borc = borcEntityService.findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+        BorcDto borcDtoo = BorcConverter.INSTANCE.converBorcToBorcDto(borc);
+        double v =0;
+        for (BorcDto borcDto : borcDtos) {
+            LocalDate now = LocalDate.now();
+            LocalDate vadeTarihi = borcDto.getVadeTarihi();
+            long diff = ChronoUnit.DAYS.between(vadeTarihi, now);
+
+            if (now.isAfter(vadeTarihi)) {
+
+                v = diff * 1.5;
+                //v+=v;
+                borcDto.setKalanBorcTutari(v);
+            }
+        }
+        borcDtoo.setKalanBorcTutari(v);
+
+        return borcDtoo;
     }
 
 

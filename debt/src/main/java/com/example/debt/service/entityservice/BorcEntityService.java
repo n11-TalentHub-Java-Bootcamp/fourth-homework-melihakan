@@ -5,6 +5,7 @@ import com.example.debt.entity.Borc;
 import com.example.debt.gen.service.BaseEntityService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,7 +19,15 @@ public class BorcEntityService extends BaseEntityService<Borc, BorcDao> {
     public List<Borc> findByKullaniciIdOrderByAnaBorcTutari(Long kullaniciId){
         return getDao().findByKullaniciIdOrderByAnaBorcTutari(kullaniciId);
     }
-/*    public List<Borc> findByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId){
+    public List<Borc> findAllByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId){
+        return getDao().findAllByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+    }
+    public List<Borc> findByOlusmaTarihiGreaterThanEqualAndOlusmaTarihiLessThanEqual(LocalDate startDate,LocalDate endDate){
+        return getDao().findByOlusmaTarihiGreaterThanEqualAndOlusmaTarihiLessThanEqual(startDate,endDate);
+    }
+
+    public Borc findByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId){
         return getDao().findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
-    }*/
+    }
+
 }

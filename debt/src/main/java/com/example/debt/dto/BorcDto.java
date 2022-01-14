@@ -11,6 +11,7 @@ import java.util.Date;
 public class BorcDto {
     private Long id;
     private LocalDate vadeTarihi;
+    private LocalDate olusmaTarihi;
     private Double anaBorcTutari;
     private Double kalanBorcTutari;
     private Long kullaniciId;

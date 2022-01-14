@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -22,6 +23,12 @@ public class BorcController {
         return borcService.save(borcDto);
 
     }
+    @GetMapping("date/{startDate}/{endDate}")
+    public List<BorcDto> findByOluşmaTarihiGreaterThanEqualAndOluşmaTarihiLessThanEqual(@PathVariable String startDate,@PathVariable String endDate) {
+        return borcService.findByOlusmaTarihiGreaterThanEqualAndOlusmaTarihiLessThanEqual(LocalDate.parse(startDate),LocalDate.parse(endDate));
+    }
+
+
     @GetMapping
     public List<BorcDto> findByAll(){
         return borcService.findByAll();
@@ -30,13 +37,21 @@ public class BorcController {
     public List<BorcDto> findAllBorcByKullaniciId(@PathVariable Long kullaniciId){
         return borcService.findAllBorcByKullaniciId(kullaniciId);
     }
-    @GetMapping("/user/anaborc/{kullaniciId}")
-    public MappingJacksonValue findAllAnaBorcByKullanaciId(@PathVariable Long kullaniciId){
+    @GetMapping("/user/anaBorc/{kullaniciId}")
+    public List<BorcDto> findAllAnaBorcByKullanaciId(@PathVariable Long kullaniciId){
         return borcService.findAnaBorcByKullaniciId(kullaniciId);
     }
-/*    @GetMapping("/user/vadeborc/{kullaniciId}")
+    @GetMapping("/user/vadeBorcList/{kullaniciId}")
     public List<BorcDto> findAllVadeBorcByKullanaciId(@PathVariable Long kullaniciId){
         return borcService.findAllVadeBorcByKullanaciId(kullaniciId);
-    }*/
+    }
+    @GetMapping("/user/vadeBorc/{kullaniciId}")
+    public BorcDto findByKullaniciIdOrderByKalanBorcTutari(@PathVariable Long kullaniciId){
+        return borcService.findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+    }
+    @GetMapping("/user/vadeBorcAnlık/{kullaniciId}")
+    public BorcDto findByKullaniciIdOrderByKalanBorcTutarii(@PathVariable Long kullaniciId){
+        return borcService.findByKullaniciIdOrderByKalanBorcTutarii(kullaniciId);
+    }
 
 }

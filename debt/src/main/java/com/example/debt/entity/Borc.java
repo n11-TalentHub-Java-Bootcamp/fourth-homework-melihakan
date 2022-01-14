@@ -16,7 +16,6 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonFilter("BorcFilter")
 public class Borc implements BaseEntity {
 
     @Id
@@ -24,6 +23,8 @@ public class Borc implements BaseEntity {
     private Long id;
 
     private LocalDate vadeTarihi;
+    private LocalDate olusmaTarihi;
+
     @Column(updatable = false)
     private Double anaBorcTutari;
     private Double kalanBorcTutari;
