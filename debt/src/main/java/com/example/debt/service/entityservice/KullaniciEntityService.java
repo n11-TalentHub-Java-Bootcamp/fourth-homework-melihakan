@@ -10,4 +10,7 @@ public class KullaniciEntityService extends BaseEntityService<Kullanici, Kullani
     public KullaniciEntityService(KullaniciDao dao){
         super(dao);
     }
+    public Kullanici findKullaniciById(Long id){
+        return getDao().findKullaniciById(id);
+    }
 }

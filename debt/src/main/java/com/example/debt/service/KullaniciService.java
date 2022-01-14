@@ -6,11 +6,17 @@ import com.example.debt.service.entityservice.KullaniciEntityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class KullaniciService {
 
     private KullaniciEntityService kullaniciEntityService;
+
+    public List<Kullanici> findAllKullanici(){
+        return kullaniciEntityService.findAll();
+    }
 
     public Kullanici saveKullanici(Kullanici kullanici){
         return kullaniciEntityService.save(kullanici);
@@ -21,12 +27,12 @@ public class KullaniciService {
         kullanici = kullaniciEntityService.save(kullanici);
         return kullanici;
     }
-    public Kullanici findKullaniciId(Long id){
-       return kullaniciEntityService.findById(id);
+    public Kullanici findKullaniciById(Long id){
+       return kullaniciEntityService.findKullaniciById(id);
     }
 
     public void deleteKullanici(Long id) {
-        Kullanici kullanici = findKullaniciId(id);
+        Kullanici kullanici = findKullaniciById(id);
         kullaniciEntityService.delete(kullanici);
     }
 }
