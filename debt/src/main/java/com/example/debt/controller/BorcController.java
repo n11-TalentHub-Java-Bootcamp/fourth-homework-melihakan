@@ -45,13 +45,22 @@ public class BorcController {
     public List<BorcDto> findAllVadeBorcByKullanaciId(@PathVariable Long kullaniciId){
         return borcService.findAllVadeBorcByKullanaciId(kullaniciId);
     }
-    @GetMapping("/user/vadeBorc/{kullaniciId}")
+/*    @GetMapping("/user/vadeBorc/{kullaniciId}")
     public BorcDto findByKullaniciIdOrderByKalanBorcTutari(@PathVariable Long kullaniciId){
         return borcService.findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+    }*/
+    @GetMapping("/user/toplamBorc/{kullaniciId}")
+    public Double findByKullaniciIdAndAnaBorcTutari(@PathVariable Long kullaniciId){
+        return borcService.findByKullaniciIdAndAnaBorcTutari(kullaniciId);
     }
-    @GetMapping("/user/vadeBorcAnlık/{kullaniciId}")
-    public BorcDto findByKullaniciIdOrderByKalanBorcTutarii(@PathVariable Long kullaniciId){
-        return borcService.findByKullaniciIdOrderByKalanBorcTutarii(kullaniciId);
+    @GetMapping("/user/vadeBorcToplam/{kullaniciId}")
+    public Double findByKullaniciIdAndKalanBorcTutari(@PathVariable Long kullaniciId){
+        return borcService.findByKullaniciIdAndKalanBorcTutari(kullaniciId);
     }
+    @GetMapping("/user/gecikmeZam/{kullaniciId}")
+    public Double findByKullaniciIdAndGecikmeZammı(@PathVariable Long kullaniciId){
+        return borcService.findByKullaniciIdAndGecikmeZammı(kullaniciId);
+    }
+
 
 }

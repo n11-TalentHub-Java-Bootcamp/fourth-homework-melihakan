@@ -2,6 +2,7 @@ package com.example.debt.dao;
 
 import com.example.debt.entity.Borc;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -15,7 +16,9 @@ public interface BorcDao extends JpaRepository<Borc,Long>{
 
     List<Borc> findAllByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId);
     List<Borc> findByOlusmaTarihiGreaterThanEqualAndOlusmaTarihiLessThanEqual(LocalDate startDate, LocalDate endDate);
-    Borc findByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId);
+    //@Query("select SUM (Borc.kalanBorcTutari) from Borc b where b.kullanici.id= :kullaniciId")
+    List<Borc> findByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId);
+
 
 
 

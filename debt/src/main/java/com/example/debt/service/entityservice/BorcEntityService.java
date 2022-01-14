@@ -26,7 +26,7 @@ public class BorcEntityService extends BaseEntityService<Borc, BorcDao> {
         return getDao().findByOlusmaTarihiGreaterThanEqualAndOlusmaTarihiLessThanEqual(startDate,endDate);
     }
 
-    public Borc findByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId){
+    public List<Borc> findByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId){
         return getDao().findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
     }
 

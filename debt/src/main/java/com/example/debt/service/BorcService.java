@@ -3,16 +3,13 @@ package com.example.debt.service;
 import com.example.debt.converter.BorcConverter;
 import com.example.debt.dto.BorcDto;
 import com.example.debt.entity.Borc;
+import com.example.debt.entity.Kullanici;
 import com.example.debt.service.entityservice.BorcEntityService;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +89,7 @@ public class BorcService  {
 
         return borcDto;
     }
-    public BorcDto findByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId){
+/*    public BorcDto findByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId){
         List<Borc> borcList = borcEntityService.findAllByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
         List<BorcDto> borcDtos = BorcConverter.INSTANCE.convertAllBorcListToBorcDtoList(borcList);
         Borc borc = borcEntityService.findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
@@ -113,14 +110,93 @@ public class BorcService  {
         borcDtoo.setKalanBorcTutari(v);
 
         return borcDtoo;
-    }
-    public BorcDto findByKullaniciIdOrderByKalanBorcTutarii(Long kullaniciId){
-        List<Borc> borcList = borcEntityService.findAllByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+    }*/
+    public List<BorcDto> findByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId){
+
+        List<Borc> borcList = borcEntityService.findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
         List<BorcDto> borcDtos = BorcConverter.INSTANCE.convertAllBorcListToBorcDtoList(borcList);
-        Borc borc = borcEntityService.findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
-        BorcDto borcDtoo = BorcConverter.INSTANCE.converBorcToBorcDto(borc);
+/*        Borc borc = borcEntityService.findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+        BorcDto borcDtoo = BorcConverter.INSTANCE.converBorcToBorcDto(borc);*/
         double v =0;
+        List<Double> sumList = new ArrayList<>();
+        double sum =0;
         for (BorcDto borcDto : borcDtos) {
+
+            LocalDate now = LocalDate.now();
+            LocalDate vadeTarihi = borcDto.getVadeTarihi();
+            long diff = ChronoUnit.DAYS.between(vadeTarihi, now);
+
+            if (now.isAfter(vadeTarihi)) {
+
+                v = borcDto.getKalanBorcTutari()+diff * 1.5;
+
+                borcDto.setKalanBorcTutari(v);
+            }
+            sumList.add(borcDto.getKalanBorcTutari());
+
+        }
+
+        for (Double aDouble : sumList) {
+            sum +=aDouble;
+        }
+
+
+        return borcDtos;
+    }
+    public Double findByKullaniciIdAndKalanBorcTutari(Long kullaniciId){
+        List<Borc> borcList = borcEntityService.findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+        List<BorcDto> borcDtos = BorcConverter.INSTANCE.convertAllBorcListToBorcDtoList(borcList);
+/*        Borc borc = borcEntityService.findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+        BorcDto borcDtoo = BorcConverter.INSTANCE.converBorcToBorcDto(borc);*/
+        double v =0;
+        List<Double> sumList = new ArrayList<>();
+        double sum =0;
+        for (BorcDto borcDto : borcDtos) {
+
+            LocalDate now = LocalDate.now();
+            LocalDate vadeTarihi = borcDto.getVadeTarihi();
+            long diff = ChronoUnit.DAYS.between(vadeTarihi, now);
+
+            if (now.isAfter(vadeTarihi)) {
+
+                v = borcDto.getKalanBorcTutari()+diff * 1.5;
+
+                borcDto.setKalanBorcTutari(v);
+            }
+            sumList.add(borcDto.getKalanBorcTutari());
+
+        }
+
+        for (Double aDouble : sumList) {
+            sum +=aDouble;
+        }
+        return sum;
+    }
+    public Double findByKullaniciIdAndAnaBorcTutari(Long kullaniciId){
+        List<Borc> borcList = borcEntityService.findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+        List<BorcDto> borcDtos = BorcConverter.INSTANCE.convertAllBorcListToBorcDtoList(borcList);
+
+        List<Double> sumList = new ArrayList<>();
+        double sum =0;
+        for (BorcDto borcDto : borcDtos) {
+
+            sumList.add(borcDto.getAnaBorcTutari());
+
+        }
+
+        for (Double aDouble : sumList) {
+            sum +=aDouble;
+        }
+        return sum;
+    }
+    public Double findByKullaniciIdAndGecikmeZammı(Long kullaniciId){
+        List<Borc> borcList = borcEntityService.findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+        List<BorcDto> borcDtos = BorcConverter.INSTANCE.convertAllBorcListToBorcDtoList(borcList);
+        double v =0;
+        List<Double> sumList = new ArrayList<>();
+        double sum =0;
+        for (BorcDto borcDto : borcDtos) {
+
             LocalDate now = LocalDate.now();
             LocalDate vadeTarihi = borcDto.getVadeTarihi();
             long diff = ChronoUnit.DAYS.between(vadeTarihi, now);
@@ -128,13 +204,17 @@ public class BorcService  {
             if (now.isAfter(vadeTarihi)) {
 
                 v = diff * 1.5;
-                //v+=v;
-                borcDto.setKalanBorcTutari(v);
-            }
-        }
-        borcDtoo.setKalanBorcTutari(v);
 
-        return borcDtoo;
+
+            }
+            sumList.add(v);
+
+        }
+
+        for (Double aDouble : sumList) {
+            sum +=aDouble;
+        }
+        return sum;
     }
 
 
