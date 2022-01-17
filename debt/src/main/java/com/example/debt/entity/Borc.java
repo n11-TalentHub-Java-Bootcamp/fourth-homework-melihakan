@@ -1,5 +1,6 @@
 package com.example.debt.entity;
 
+import com.example.debt.enumborc.EnumBorcTipi;
 import com.example.debt.gen.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class Borc implements BaseEntity {
     @Column(updatable = false)
     private Double anaBorcTutari;
     private Double kalanBorcTutari;
+    private EnumBorcTipi enumBorcTipi;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_KULLANICI",

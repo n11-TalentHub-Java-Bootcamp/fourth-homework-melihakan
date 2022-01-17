@@ -4,6 +4,7 @@ import com.example.debt.converter.BorcConverter;
 import com.example.debt.dto.BorcDto;
 import com.example.debt.entity.Borc;
 import com.example.debt.entity.Kullanici;
+import com.example.debt.enumborc.EnumBorcTipi;
 import com.example.debt.service.entityservice.BorcEntityService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,16 @@ public class BorcService  {
 
     public ResponseEntity save(BorcDto borcDto) {
         Borc borc = BorcConverter.INSTANCE.convertBorcDtoToBorc(borcDto);
+        borc.setEnumBorcTipi(EnumBorcTipi.ENUM_NORMAL_BORC);
         Borc save = borcEntityService.save(borc);
         return ResponseEntity.ok(save);
+
+    }
+    public Borc saveGecikmeBorc(BorcDto borcDto) {
+        Borc borc = BorcConverter.INSTANCE.convertBorcDtoToBorc(borcDto);
+        borc.setEnumBorcTipi(EnumBorcTipi.ENUM_GECIKME_ZAMMI);
+        Borc save = borcEntityService.save(borc);
+        return save;
 
     }
     public List<BorcDto> findByAll(){
@@ -133,7 +142,6 @@ public class BorcService  {
                 borcDto.setKalanBorcTutari(v);
             }
             sumList.add(borcDto.getKalanBorcTutari());
-
         }
 
         for (Double aDouble : sumList) {
@@ -195,6 +203,7 @@ public class BorcService  {
         double v =0;
         List<Double> sumList = new ArrayList<>();
         double sum =0;
+
         for (BorcDto borcDto : borcDtos) {
 
             LocalDate now = LocalDate.now();
@@ -204,17 +213,42 @@ public class BorcService  {
             if (now.isAfter(vadeTarihi)) {
 
                 v = diff * 1.5;
-
-
             }
             sumList.add(v);
-
         }
 
         for (Double aDouble : sumList) {
             sum +=aDouble;
         }
         return sum;
+    }
+    public List<BorcDto> findAllByid(Long id){
+        List<Borc> borcList = borcEntityService.findAllByid(id);
+        List<BorcDto> borcDtos = BorcConverter.INSTANCE.convertAllBorcListToBorcDtoList(borcList);
+        double v =0;
+        for (BorcDto borcDto : borcDtos) {
+            LocalDate now = LocalDate.now();
+            LocalDate vadeTarihi = borcDto.getVadeTarihi();
+            long diff = ChronoUnit.DAYS.between(vadeTarihi, now);
+
+            if (now.isAfter(vadeTarihi)) {
+
+                v = diff * 1.5;
+            }else {
+                v = diff * 2;
+            }
+            borcDto.setKalanBorcTutari(v);
+        }
+        return borcDtos;
+    }
+    public BorcDto updateBorc(BorcDto borcDto) {
+
+        Borc borc = BorcConverter.INSTANCE.convertBorcDtoToBorc(borcDto);
+        borc = borcEntityService.save(borc);
+        borcDto.setKalanBorcTutari(0.0);
+        BorcDto dto = BorcConverter.INSTANCE.convertBorcToBorcDto(borc);
+
+        return dto;
     }
 
 

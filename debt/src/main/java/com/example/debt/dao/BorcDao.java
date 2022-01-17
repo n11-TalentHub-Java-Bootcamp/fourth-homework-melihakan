@@ -18,6 +18,7 @@ public interface BorcDao extends JpaRepository<Borc,Long>{
     List<Borc> findByOlusmaTarihiGreaterThanEqualAndOlusmaTarihiLessThanEqual(LocalDate startDate, LocalDate endDate);
     //@Query("select SUM (Borc.kalanBorcTutari) from Borc b where b.kullanici.id= :kullaniciId")
     List<Borc> findByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId);
+    List<Borc> findAllByid(Long id);
 
 
 

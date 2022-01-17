@@ -24,7 +24,7 @@ public interface BorcConverter {
 
 
     @Mapping(target = "kullaniciId", source = "kullanici.id")
-    BorcDto converBorcToBorcDto(Borc borc);
+    BorcDto convertBorcToBorcDto(Borc borc);
 
     //@Query("from Borc b where b.kullanici.id = :kullaniciId")
     @Mapping(target = "kullaniciId", source = "kullanici.id")

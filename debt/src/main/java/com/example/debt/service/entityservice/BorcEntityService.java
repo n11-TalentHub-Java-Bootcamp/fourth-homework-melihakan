@@ -1,6 +1,7 @@
 package com.example.debt.service.entityservice;
 
 import com.example.debt.dao.BorcDao;
+import com.example.debt.dto.BorcDto;
 import com.example.debt.entity.Borc;
 import com.example.debt.gen.service.BaseEntityService;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,10 @@ public class BorcEntityService extends BaseEntityService<Borc, BorcDao> {
 
     public List<Borc> findByKullaniciIdOrderByKalanBorcTutari(Long kullaniciId){
         return getDao().findByKullaniciIdOrderByKalanBorcTutari(kullaniciId);
+    }
+    public List<Borc> findAllByid(Long id){
+        return getDao().findAllByid(id);
+
     }
 
 }

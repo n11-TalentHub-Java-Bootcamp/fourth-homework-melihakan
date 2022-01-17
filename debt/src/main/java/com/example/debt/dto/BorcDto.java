@@ -15,4 +15,5 @@ public class BorcDto {
     private Double anaBorcTutari;
     private Double kalanBorcTutari;
     private Long kullaniciId;
+
 }
